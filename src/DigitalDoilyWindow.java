@@ -14,21 +14,12 @@ public class DigitalDoilyWindow extends JFrame {
     private static int HEIGHT;
     private static String NAME;
 
-    public static ArrayList<Point> pointList;
-    public static ArrayList<ArrayList<Point>> drawSteps;
-    private boolean mouseClicked = false;
-
-    public static int numberOfSectors = 1;
-    public static double angle = 360 / numberOfSectors;
-
     public static final Font MAIN_FONT = new Font("Arial", Font.PLAIN, 15);
     public static final Dimension DEFAULT_SIZE = new Dimension(1024, 600);
 
     public DigitalDoilyWindow(int width, int height, String name) {
 
         super(name);
-        System.out.println(angle);
-        pointList = new ArrayList<Point>();
 
         this.WIDTH = width;
         this.HEIGHT = height;
@@ -45,12 +36,12 @@ public class DigitalDoilyWindow extends JFrame {
         window.setLayout(new BorderLayout());
 
         //panel for the drawing area
-        JPanel drawingArea = new DrawingArea();
+        DrawingArea drawingArea = new DrawingArea();
         //drawingArea.setBackground(Color.gray);
 
         drawingArea.setPreferredSize(new Dimension(600, this.HEIGHT));
 
-        drawingArea.addMouseMotionListener(new MouseMotionListener() {
+       /* drawingArea.addMouseMotionListener(new MouseMotionListener() {
             @Override
             public void mouseDragged(MouseEvent e) {
 
@@ -62,7 +53,7 @@ public class DigitalDoilyWindow extends JFrame {
                     int tempX = e.getX() - drawingArea.getWidth() / 2;
                     int tempY = e.getY() - drawingArea.getHeight() / 2;
                     System.out.println(tempX + " " + tempY);
-                    pointList.add(new Point(-tempX * 2, -tempY * 2));
+                    //pointList.add(new Point(-tempX * 2, -tempY * 2));
                     drawingArea.repaint();
                 }
             }
@@ -97,7 +88,7 @@ public class DigitalDoilyWindow extends JFrame {
             public void mouseExited(MouseEvent e) {
 
             }
-        });
+        });*/
 
 
         //panel for the options and gallery
@@ -107,26 +98,15 @@ public class DigitalDoilyWindow extends JFrame {
         tools.setBackground(Color.GREEN);
 
         //panel for the control panel
-        JPanel controls = new JPanel();
-        controls.setLayout(new FlowLayout());
-        controls.setBackground(Color.red);
+
+       // controls.setLayout(new FlowLayout());
+        //controls.setBackground(Color.red);
 
 
         //panel for the gallery
-        JPanel gallery = new JPanel();
-        gallery.setLayout(new GridLayout(4, 3));
-        for (int i = 1; i <= 12; i++) {
-            JButton test = new JButton("Picture " + i);
-            test.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    DigitalDoilyWindow.numberOfSectors++;
-                    angle = 360 / DigitalDoilyWindow.numberOfSectors;
-                    drawingArea.repaint();
-                }
-            });
-            gallery.add(test);
-        }
+        Gallery gallery = new Gallery();
+        ControlPanel controls = new ControlPanel(drawingArea,this,gallery);
+
         gallery.setBackground(Color.YELLOW);
 
 
@@ -143,6 +123,8 @@ public class DigitalDoilyWindow extends JFrame {
 
 
         this.pack();
+
+        drawingArea.repaint();
 
     }
 }
