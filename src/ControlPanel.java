@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.Objects;
 
 /**
@@ -21,9 +22,9 @@ public class ControlPanel extends JPanel {
         this.drawingArea = drawingArea;
         setLayout(new FlowLayout());
         setBackground(Color.YELLOW);
-        JButton btn1 = new JButton("Choose Color");
+        JButton chooseColor = new JButton("Choose Color");
 
-        btn1.addActionListener(new ActionListener() {
+        chooseColor.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 Color newColor = JColorChooser.showDialog(
                         test,
@@ -32,11 +33,13 @@ public class ControlPanel extends JPanel {
                 if(newColor != null){
                     System.out.println(newColor.getBlue());
                     drawingArea.drawingColor = newColor;
+                    drawingArea.pointList.setColor(newColor);
                 }
+                drawingArea.repaint();
             }
         });
 
-        add(btn1);
+        add(chooseColor);
 
 
         JButton clear = new JButton("Clear");
@@ -44,7 +47,7 @@ public class ControlPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                // DigitalDoilyWindow.pointList.removeAll(DigitalDoilyWindow.pointList);
-                drawingArea.pointList.removeAll(drawingArea.pointList);
+                DrawingArea.strokes.removeAll(DrawingArea.strokes);
                 System.out.println("dddddd");
                 drawingArea.repaint();
             }
@@ -61,7 +64,9 @@ public class ControlPanel extends JPanel {
             public void stateChanged(ChangeEvent e) {
                 JSpinner test = (JSpinner) e.getSource();
                 drawingArea.drawingPenSize = (int) test.getValue();
+                drawingArea.pointList.setPenSize((int) test.getValue());
                 drawingArea.repaint();
+
 
                 System.out.println(test.getValue().toString());
             }
@@ -85,17 +90,47 @@ public class ControlPanel extends JPanel {
         });
         add(toggleSectors);
 
+        JButton toggleReflection = new JButton("Turn Refection on");
+        toggleReflection.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                DrawingArea.reflected = !DrawingArea.reflected;
+
+                JButton temp = (JButton)e.getSource();
+                if(DrawingArea.reflected)
+                {
+                    temp.setText("Turn Reflection off");
+                }
+                else temp.setText("Turn Reflection on");
+
+                drawingArea.pointList.setReflected(DrawingArea.reflected);
+                drawingArea.repaint();
+            }
+        });
+        add(toggleReflection);
+
         JButton saveDoily = new JButton("Save to gallery");
         saveDoily.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                BufferedImage temp = new BufferedImage(drawingArea.getWidth(),drawingArea.getHeight(),BufferedImage.TYPE_3BYTE_BGR);
+                BufferedImage temp = drawingArea.getScreenShot(drawingArea);
+                BufferedImage test = resize(temp,100,100);
 
-                drawingArea.getGraphics().drawImage(temp,0,0,null);
-                JLabel test = new JLabel(new ImageIcon(temp));
-                add(test);
+                gallery.add(new JLabel(new ImageIcon(temp)));
+                gallery.repaint();
+
             }
         });
 
+        add(saveDoily);
+
+    }
+    public static BufferedImage resize(BufferedImage image, int width, int height) {
+        BufferedImage bi = new BufferedImage(width, height, BufferedImage.TRANSLUCENT);
+        Graphics2D g2d = (Graphics2D) bi.createGraphics();
+        g2d.addRenderingHints(new RenderingHints(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY));
+        g2d.drawImage(image, 0, 0, width, height, null);
+        g2d.dispose();
+        return bi;
     }
 }

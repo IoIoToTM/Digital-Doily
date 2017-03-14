@@ -39,7 +39,9 @@ public class DigitalDoilyWindow extends JFrame {
         DrawingArea drawingArea = new DrawingArea();
         //drawingArea.setBackground(Color.gray);
 
-        drawingArea.setPreferredSize(new Dimension(600, this.HEIGHT));
+        drawingArea.setPreferredSize(new Dimension(700, this.HEIGHT));
+        drawingArea.setMinimumSize(new Dimension(700,this.HEIGHT));
+        drawingArea.setMaximumSize(new Dimension(700,this.HEIGHT));
 
        /* drawingArea.addMouseMotionListener(new MouseMotionListener() {
             @Override
@@ -93,9 +95,10 @@ public class DigitalDoilyWindow extends JFrame {
 
         //panel for the options and gallery
         JPanel tools = new JPanel();
-        tools.setPreferredSize(new Dimension(300, 300));
+        tools.setPreferredSize(new Dimension(400, this.HEIGHT));
+
         tools.setLayout(new GridLayout(2, 1));
-        tools.setBackground(Color.GREEN);
+        tools.setBackground(Color.BLACK);
 
         //panel for the control panel
 
@@ -105,9 +108,11 @@ public class DigitalDoilyWindow extends JFrame {
 
         //panel for the gallery
         Gallery gallery = new Gallery();
+        gallery.setPreferredSize(new Dimension(600,this.HEIGHT/2));
         ControlPanel controls = new ControlPanel(drawingArea,this,gallery);
+        controls.setPreferredSize(new Dimension(200,this.HEIGHT/2));
 
-        gallery.setBackground(Color.YELLOW);
+        //gallery.setBackground(Color.GREEN);
 
 
         tools.add(controls);
