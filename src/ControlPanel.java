@@ -146,9 +146,7 @@ public class ControlPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 BufferedImage temp = drawingArea.copyDrawingArea(drawingArea);
-                BufferedImage test = resize(temp,100,100);
-
-                gallery.add(new JLabel(new ImageIcon(temp)));
+                gallery.addImage(temp);
                 gallery.repaint();
 
             }
@@ -175,12 +173,5 @@ public class ControlPanel extends JPanel {
         });*/
 
     }
-    public static BufferedImage resize(BufferedImage image, int width, int height) {
-        BufferedImage bi = new BufferedImage(width, height, BufferedImage.TRANSLUCENT);
-        Graphics2D g2d = (Graphics2D) bi.createGraphics();
-        g2d.addRenderingHints(new RenderingHints(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY));
-        g2d.drawImage(image, 0, 0, width, height, null);
-        g2d.dispose();
-        return bi;
-    }
+
 }

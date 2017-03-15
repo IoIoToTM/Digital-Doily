@@ -97,7 +97,7 @@ public class DigitalDoilyWindow extends JFrame {
         JPanel tools = new JPanel();
         tools.setPreferredSize(new Dimension(301, this.HEIGHT));
 
-        tools.setLayout(new GridLayout(2, 1));
+        tools.setLayout(new GridLayout(2,1));
         tools.setBackground(Color.BLACK);
 
         //panel for the control panel
