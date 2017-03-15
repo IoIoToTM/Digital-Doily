@@ -33,7 +33,7 @@ public class DrawingArea extends JPanel {
 
         drawingPenSize = 1;
         drawingColor = Color.WHITE;
-        numberOfSectors = 6;
+        numberOfSectors = 7;
         pointList = new Stroke(drawingColor,reflected,drawingPenSize);
         angle = (double) 360 / numberOfSectors;
         drawing = new BufferedImage(600, 600, BufferedImage.TYPE_4BYTE_ABGR);
@@ -42,10 +42,21 @@ public class DrawingArea extends JPanel {
         addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
+
+                if(numberOfSectors%2==0)
+                {
                 int tempX = e.getX() - getWidth() / 2;
                 int tempY = e.getY() - getHeight() / 2;
                 pointList.addPoint(new Point(-tempX, -tempY));
                // pointList.add();
+                }
+                else
+                {
+                    System.out.println("NOT EVEN");
+                    int tempX = e.getX() - getWidth() / 2;
+                    int tempY = e.getY() - getHeight() / 2;
+                    pointList.addPoint(new Point(tempX,tempY));
+                }
                 repaint();
             }
 
@@ -76,9 +87,20 @@ public class DrawingArea extends JPanel {
             public void mouseDragged(MouseEvent e) {
                 if (!(e.getX() - getWidth() / 2 > getWidth() / 2) && !(e.getX() - getWidth() / 2 < -getWidth() / 2) && !(e.getY() - getHeight() / 2 < -getHeight() / 2) &&
                         !(e.getY() - getHeight() / 2 > getHeight() / 2)) {
-                    int tempX = e.getX() - getWidth() / 2;
-                    int tempY = e.getY() - getHeight() / 2;
-                    pointList.addPoint(new Point(-tempX, -tempY));
+                    if(numberOfSectors%2==0)
+                    {
+                        int tempX = e.getX() - getWidth() / 2;
+                        int tempY = e.getY() - getHeight() / 2;
+                        pointList.addPoint(new Point(-tempX, -tempY));
+                        // pointList.add();
+                    }
+                    else
+                    {
+                        System.out.println("NOT EVEN");
+                        int tempX = e.getX() - getWidth() / 2;
+                        int tempY = e.getY() - getHeight() / 2;
+                        pointList.addPoint(new Point(tempX, tempY));
+                    }
                     repaint();
                 }
             }
@@ -137,7 +159,7 @@ public class DrawingArea extends JPanel {
             g2d.drawRect((int)temp.getX(),(int)temp.getY(),drawingSize,drawingSize);
         }*/
         if (showSectorLines)
-            for (int i = 0; i <= numberOfSectors; i++) {
+            for (int i = 0; i < numberOfSectors; i++) {
                 g2d.setStroke(new BasicStroke(1));
                 g2d.setColor(Color.WHITE);
                 g2d.drawLine(0, 0, 0, -300);
@@ -148,13 +170,15 @@ public class DrawingArea extends JPanel {
         g2d.setStroke(new BasicStroke(drawingPenSize));
         g2d.setColor(Color.white);
 
-        pointList.drawStroke(g2d);
 
-        for(int i = strokes.size()-1;i>=0 ; i--)
+
+
+        //going through backwards through the stroke arraylist
+        for(int i = 0;i < strokes.size() ; i++)
         {
             strokes.get(i).drawStroke(g2d);
         }
-
+        pointList.drawStroke(g2d);
        /* for(int i = 0; i<= numberOfSectors; i++)
         {
             g2d.setColor(Color.white);

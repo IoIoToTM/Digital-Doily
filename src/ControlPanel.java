@@ -74,6 +74,21 @@ public class ControlPanel extends JPanel {
 
         add(penSizeSpinner);
 
+        SpinnerModel numOfSectors= new SpinnerNumberModel(drawingArea.numberOfSectors,1,100,1);
+        JSpinner sectorSpinner = new JSpinner(numOfSectors);
+        sectorSpinner.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                JSpinner test = (JSpinner) e.getSource();
+                drawingArea.numberOfSectors= (int) test.getValue();
+
+                drawingArea.angle = 360/(double)drawingArea.numberOfSectors;
+
+                drawingArea.repaint();
+
+            }
+        });
+        add(sectorSpinner);
         JButton toggleSectors = new JButton("Turn Sector Lines off");
         toggleSectors.addActionListener(new ActionListener() {
             @Override
@@ -109,6 +124,20 @@ public class ControlPanel extends JPanel {
         });
         add(toggleReflection);
 
+
+        JButton undo = new JButton("Undo");
+
+        undo.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                if(!DrawingArea.strokes.isEmpty())
+                DrawingArea.strokes.remove(DrawingArea.strokes.size()-1);
+                drawingArea.repaint();
+            }
+        });
+
+        add(undo);
         JButton saveDoily = new JButton("Save to gallery");
         saveDoily.addActionListener(new ActionListener() {
             @Override

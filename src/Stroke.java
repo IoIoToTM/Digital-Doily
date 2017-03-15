@@ -44,7 +44,7 @@ public class Stroke {
 
         g2d.setColor(color);
 
-        for(int i = 0; i<= DrawingArea.numberOfSectors; i++)
+        for(int i = 0; i< DrawingArea.numberOfSectors; i++)
         {
             g2d.setStroke(new BasicStroke(penSize));
             Iterator<Point> iter = pointList.iterator();
