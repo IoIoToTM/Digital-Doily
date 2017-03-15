@@ -13,6 +13,7 @@ public class Stroke {
     private ArrayList<Point> pointList;
     private Color color;
     private boolean reflected;
+    private DrawingArea drawingArea;
 
     public void setPenSize(int penSize) {
         this.penSize = penSize;
@@ -20,8 +21,9 @@ public class Stroke {
 
     private int penSize;
 
-    public Stroke(ArrayList<Point> arr, Color color, boolean reflected, int penSize)
+    public Stroke(DrawingArea drawingArea,ArrayList<Point> arr, Color color, boolean reflected, int penSize)
     {
+        this.drawingArea = drawingArea;
         pointList = arr;
         this.color = color;
         this.reflected = reflected;
@@ -29,13 +31,19 @@ public class Stroke {
 
     }
 
-    public Stroke( Color color, boolean reflected, int penSize)
+    public Stroke(DrawingArea drawingArea, Color color, boolean reflected, int penSize)
     {
+        this.drawingArea = drawingArea;
         pointList = new ArrayList<>();
         this.color = color;
         this.reflected = reflected;
         this.penSize = penSize;
 
+    }
+
+    public Stroke(DrawingArea drawingArea)
+    {
+        this.drawingArea = drawingArea;
     }
     public void drawStroke(Graphics g)
     {
@@ -44,7 +52,7 @@ public class Stroke {
 
         g2d.setColor(color);
 
-        for(int i = 0; i< DrawingArea.numberOfSectors; i++)
+        for(int i = 0; i< drawingArea.getNumberOfSectors(); i++)
         {
             g2d.setStroke(new BasicStroke(penSize));
             Iterator<Point> iter = pointList.iterator();
@@ -53,12 +61,12 @@ public class Stroke {
             if(pointList.size()==1)
             {
                 first = pointList.get(0);
-                g2d.drawOval((int)first.getX(),(int)first.getY(),DrawingArea.drawingPenSize,DrawingArea.drawingPenSize);
+                g2d.drawOval((int)first.getX(),(int)first.getY(),drawingArea.getDrawingPenSize(),drawingArea.getDrawingPenSize());
                 if(reflected)
                 {
-                    g2d.drawOval(-(int)first.getX(),(int)first.getY(),DrawingArea.drawingPenSize,DrawingArea.drawingPenSize);
+                    g2d.drawOval(-(int)first.getX(),(int)first.getY(),drawingArea.getDrawingPenSize(),drawingArea.getDrawingPenSize());
                 }
-                g2d.rotate(Math.toRadians(DrawingArea.angle));
+                g2d.rotate(Math.toRadians(drawingArea.getAngle()));
             }
             else if(pointList.size()>1)
             {
@@ -77,7 +85,7 @@ public class Stroke {
 
                     first=second;
                 }
-                g2d.rotate(Math.toRadians(DrawingArea.angle));
+                g2d.rotate(Math.toRadians(drawingArea.getAngle()));
             }
         }
 

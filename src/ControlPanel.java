@@ -1,9 +1,12 @@
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.text.TextAction;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -32,8 +35,8 @@ public class ControlPanel extends JPanel {
                         test.getBackground());
                 if(newColor != null){
                     System.out.println(newColor.getBlue());
-                    drawingArea.drawingColor = newColor;
-                    drawingArea.pointList.setColor(newColor);
+                    drawingArea.setDrawingColor(newColor);
+                    drawingArea.getPointList().setColor(newColor);
                 }
                 drawingArea.repaint();
             }
@@ -47,7 +50,7 @@ public class ControlPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                // DigitalDoilyWindow.pointList.removeAll(DigitalDoilyWindow.pointList);
-                DrawingArea.strokes.removeAll(DrawingArea.strokes);
+                drawingArea.getStrokes().removeAll(drawingArea.getStrokes());
                 System.out.println("dddddd");
                 drawingArea.repaint();
             }
@@ -56,15 +59,15 @@ public class ControlPanel extends JPanel {
 
         add(clear);
 
-        SpinnerModel penSize = new SpinnerNumberModel(drawingArea.drawingPenSize,1,20,1);
+        SpinnerModel penSize = new SpinnerNumberModel(drawingArea.getDrawingPenSize(),1,20,1);
 
         JSpinner penSizeSpinner = new JSpinner(penSize);
         penSizeSpinner.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
                 JSpinner test = (JSpinner) e.getSource();
-                drawingArea.drawingPenSize = (int) test.getValue();
-                drawingArea.pointList.setPenSize((int) test.getValue());
+                drawingArea.setDrawingPenSize( (int) test.getValue());
+                drawingArea.getPointList().setPenSize((int) test.getValue());
                 drawingArea.repaint();
 
 
@@ -74,15 +77,15 @@ public class ControlPanel extends JPanel {
 
         add(penSizeSpinner);
 
-        SpinnerModel numOfSectors= new SpinnerNumberModel(drawingArea.numberOfSectors,1,100,1);
+        SpinnerModel numOfSectors= new SpinnerNumberModel(drawingArea.getNumberOfSectors(),1,100,1);
         JSpinner sectorSpinner = new JSpinner(numOfSectors);
         sectorSpinner.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
                 JSpinner test = (JSpinner) e.getSource();
-                drawingArea.numberOfSectors= (int) test.getValue();
+                drawingArea.setNumberOfSectors((int) test.getValue());
 
-                drawingArea.angle = 360/(double)drawingArea.numberOfSectors;
+                drawingArea.setAngle( 360/(double)drawingArea.getNumberOfSectors());
 
                 drawingArea.repaint();
 
@@ -93,9 +96,9 @@ public class ControlPanel extends JPanel {
         toggleSectors.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                drawingArea.showSectorLines = !drawingArea.showSectorLines;
+                drawingArea.setShowSectorLines(!drawingArea.isShowSectorLines());
                 JButton temp = (JButton)e.getSource();
-                if(drawingArea.showSectorLines)
+                if(drawingArea.isShowSectorLines())
                 {
                     temp.setText("Turn Sector Lines off");
                 }
@@ -109,16 +112,16 @@ public class ControlPanel extends JPanel {
         toggleReflection.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                DrawingArea.reflected = !DrawingArea.reflected;
+                drawingArea.setReflected(!drawingArea.isReflected());
 
                 JButton temp = (JButton)e.getSource();
-                if(DrawingArea.reflected)
+                if(drawingArea.isReflected())
                 {
                     temp.setText("Turn Reflection off");
                 }
                 else temp.setText("Turn Reflection on");
 
-                drawingArea.pointList.setReflected(DrawingArea.reflected);
+                drawingArea.getPointList().setReflected(drawingArea.isReflected());
                 drawingArea.repaint();
             }
         });
@@ -131,8 +134,8 @@ public class ControlPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                if(!DrawingArea.strokes.isEmpty())
-                DrawingArea.strokes.remove(DrawingArea.strokes.size()-1);
+                if(!drawingArea.getStrokes().isEmpty())
+                drawingArea.getStrokes().remove(drawingArea.getStrokes().size()-1);
                 drawingArea.repaint();
             }
         });
@@ -142,7 +145,7 @@ public class ControlPanel extends JPanel {
         saveDoily.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                BufferedImage temp = drawingArea.getScreenShot(drawingArea);
+                BufferedImage temp = drawingArea.copyDrawingArea(drawingArea);
                 BufferedImage test = resize(temp,100,100);
 
                 gallery.add(new JLabel(new ImageIcon(temp)));
@@ -152,6 +155,24 @@ public class ControlPanel extends JPanel {
         });
 
         add(saveDoily);
+
+
+        /*this.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                super.keyTyped(e);
+                System.out.println("TYOE");
+
+                if(e.getKeyCode()==KeyEvent.VK_Z && e.isControlDown())
+                {
+
+                    System.out.println("CONTROL");
+                    if(!DrawingArea.strokes.isEmpty())
+                        DrawingArea.strokes.remove(DrawingArea.strokes.size()-1);
+                    drawingArea.repaint();
+                }
+            }
+        });*/
 
     }
     public static BufferedImage resize(BufferedImage image, int width, int height) {

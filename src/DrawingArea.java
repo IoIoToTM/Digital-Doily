@@ -14,18 +14,20 @@ import java.util.Iterator;
 
 public class DrawingArea extends JPanel {
 
-    public static int drawingPenSize;
-    public static Color drawingColor;
-    public static int numberOfSectors;
-    public static double angle;
-    public static boolean showSectorLines = true;
-    public static boolean reflected = false;
-    public static BufferedImage drawing;
 
-    public Stroke pointList;
-    public static ArrayList<Stroke> strokes;
+
+    private int drawingPenSize;
+    private Color drawingColor;
+    private int numberOfSectors;
+    private double angle;
+    private boolean showSectorLines = true;
+    private boolean reflected = false;
+
+    private Stroke pointList;
+    private ArrayList<Stroke> strokes;
 
     public DrawingArea() {
+
         super();
 
         strokes = new ArrayList<>();
@@ -33,131 +35,40 @@ public class DrawingArea extends JPanel {
 
         drawingPenSize = 1;
         drawingColor = Color.WHITE;
-        numberOfSectors = 7;
-        pointList = new Stroke(drawingColor,reflected,drawingPenSize);
+        numberOfSectors = 6;
+        pointList = new Stroke(this,drawingColor, reflected, drawingPenSize);
         angle = (double) 360 / numberOfSectors;
-        drawing = new BufferedImage(600, 600, BufferedImage.TYPE_4BYTE_ABGR);
 
+        DrawingMouseListener mouseListener = new DrawingMouseListener(this);
 
-        addMouseListener(new MouseListener() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
+        addMouseListener(mouseListener);
+        addMouseMotionListener(mouseListener);
 
-                if(numberOfSectors%2==0)
-                {
-                int tempX = e.getX() - getWidth() / 2;
-                int tempY = e.getY() - getHeight() / 2;
-                pointList.addPoint(new Point(-tempX, -tempY));
-               // pointList.add();
-                }
-                else
-                {
-                    System.out.println("NOT EVEN");
-                    int tempX = e.getX() - getWidth() / 2;
-                    int tempY = e.getY() - getHeight() / 2;
-                    pointList.addPoint(new Point(tempX,tempY));
-                }
-                repaint();
-            }
-
-            @Override
-            public void mousePressed(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                strokes.add(pointList);
-                pointList = new Stroke(drawingColor,reflected,drawingPenSize);
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-
-            }
-        });
-
-        addMouseMotionListener(new MouseMotionListener() {
-            @Override
-            public void mouseDragged(MouseEvent e) {
-                if (!(e.getX() - getWidth() / 2 > getWidth() / 2) && !(e.getX() - getWidth() / 2 < -getWidth() / 2) && !(e.getY() - getHeight() / 2 < -getHeight() / 2) &&
-                        !(e.getY() - getHeight() / 2 > getHeight() / 2)) {
-                    if(numberOfSectors%2==0)
-                    {
-                        int tempX = e.getX() - getWidth() / 2;
-                        int tempY = e.getY() - getHeight() / 2;
-                        pointList.addPoint(new Point(-tempX, -tempY));
-                        // pointList.add();
-                    }
-                    else
-                    {
-                        System.out.println("NOT EVEN");
-                        int tempX = e.getX() - getWidth() / 2;
-                        int tempY = e.getY() - getHeight() / 2;
-                        pointList.addPoint(new Point(tempX, tempY));
-                    }
-                    repaint();
-                }
-            }
-
-            @Override
-            public void mouseMoved(MouseEvent e) {
-
-            }
-        });
 
     }
 
     public void paint(Graphics g) {
         super.paint(g);
-        //g.setColor(Color.gray);
     }
 
-    public BufferedImage getScreenShot(JPanel panel) {
-        BufferedImage bi = new BufferedImage(panel.getWidth(), panel.getHeight(), BufferedImage.TYPE_INT_ARGB);
-        panel.paint(bi.getGraphics());
-        return bi;
+    public BufferedImage copyDrawingArea(JPanel drawingArea) {
+        BufferedImage copy = new BufferedImage(drawingArea.getWidth(), drawingArea.getHeight(), BufferedImage.TYPE_INT_ARGB);
+        drawingArea.paint(copy.getGraphics());
+        return copy;
     }
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-
-
-        //Graphics2D g2d = drawing.createGraphics();
-
-        //g2d.clearRect(0,0,getWidth(),getHeight());
 
         Graphics2D g2d = (Graphics2D) g;
 
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
 
-
-        g2d.setColor(Color.black);
+        //g2d.setColor(Color.black);
         g2d.translate(this.getWidth() / 2, this.getHeight() / 2);
 
 
-        //g2d.drawRect(0,0,1,1);
-
-       /* ArrayList<Point> test = new ArrayList<Point>();
-
-
-        for (int i = 0; i < 200; i++) {
-            if (i % 10 == 0)
-                test.add(new Point(i, 30));
-            else test.add(new Point(i + 10, 30));
-        }*/
-       /* Iterator<Point> testing = DigitalDoilyWindow.pointList.iterator();
-        while(testing.hasNext())
-        {
-            Point temp = testing.next();
-            g2d.drawRect((int)temp.getX(),(int)temp.getY(),drawingSize,drawingSize);
-        }*/
         if (showSectorLines)
             for (int i = 0; i < numberOfSectors; i++) {
                 g2d.setStroke(new BasicStroke(1));
@@ -171,106 +82,75 @@ public class DrawingArea extends JPanel {
         g2d.setColor(Color.white);
 
 
-
-
         //going through backwards through the stroke arraylist
-        for(int i = 0;i < strokes.size() ; i++)
-        {
+        for (int i = 0; i < strokes.size(); i++) {
             strokes.get(i).drawStroke(g2d);
         }
         pointList.drawStroke(g2d);
-       /* for(int i = 0; i<= numberOfSectors; i++)
-        {
-            g2d.setColor(Color.white);
-            Iterator<Point> iter = pointList.iterator();
-            Point first = null,second = null;
 
-            if(pointList.size()==1)
-            {
-                first = pointList.get(0);
-                g2d.drawOval((int)first.getX(),(int)first.getY(),drawingPenSize,drawingPenSize);
-                if(reflected)
-                {
-                    g2d.drawOval(-(int)first.getX(),(int)first.getY(),drawingPenSize,drawingPenSize);
-                }
-                g2d.rotate(Math.toRadians(angle));
-            }
-            else if(pointList.size()>1)
-            {
-                first = iter.next();
+    }
 
-                while(iter.hasNext())
-                {
-                    second = iter.next();
+    public int getDrawingPenSize() {
+        return drawingPenSize;
+    }
 
-                    g2d.drawLine((int)first.getX(),(int)first.getY(),(int)second.getX(),(int)second.getY());
+    public void setDrawingPenSize(int drawingPenSize) {
+        this.drawingPenSize = drawingPenSize;
+    }
+    public Color getDrawingColor() {
+        return drawingColor;
+    }
 
-                    if(reflected)
-                    {
-                        g2d.drawLine(-(int)first.getX(),(int)first.getY(),-(int)second.getX(),(int)second.getY());
-                    }
+    public void setDrawingColor(Color drawingColor) {
+        this.drawingColor = drawingColor;
+    }
 
-                    first=second;
-                }
-                g2d.rotate(Math.toRadians(angle));
-            }
-        }
-*/
-       /* for (int i = 0; i <= numberOfSectors; i++) {
+    public int getNumberOfSectors() {
+        return numberOfSectors;
+    }
 
+    public void setNumberOfSectors(int numberOfSectors) {
+        this.numberOfSectors = numberOfSectors;
+    }
 
+    public double getAngle() {
+        return angle;
+    }
 
+    public void setAngle(double angle) {
+        this.angle = angle;
+    }
 
-            g2d.setColor(drawingColor);
-            Iterator<Point> testing = pointList.iterator();
-            Point first = null;
+    public boolean isShowSectorLines() {
+        return showSectorLines;
+    }
 
-            if (!pointList.isEmpty()) {
-                first = testing.next();
-                g2d.fillRect((int)first.getX(),(int)first.getY(),20,20);
-                if (reflected) {
-                    for (int j = 0; j < 2; j++) {
-                        while (testing.hasNext()) {
+    public void setShowSectorLines(boolean showSectorLines) {
+        this.showSectorLines = showSectorLines;
+    }
 
-                            Point temp1 = testing.next();
+    public boolean isReflected() {
+        return reflected;
+    }
 
-                            g2d.setStroke(new BasicStroke(drawingPenSize));
+    public void setReflected(boolean reflected) {
+        this.reflected = reflected;
+    }
 
-                            g2d.drawLine(-(int) temp1.getX() / 2, -(int) temp1.getY() / 2, -(int) first.getX() / 2, -(int) first.getY() / 2);
-                            //g2d.drawRect(-(int)temp1.getX()/2,-(int)temp1.getY()/2,1,1);
+    public Stroke getPointList() {
+        return pointList;
+    }
 
-                            first = temp1;
-                        }
-                        g2d.rotate(Math.toRadians(angle) / 2);
-                        testing = pointList.iterator();
-                        first = testing.next();
-                    }
-                } else {
-                    while (testing.hasNext()) {
+    public void setPointList(Stroke pointList) {
+        this.pointList = pointList;
+    }
 
-                        Point temp1 = testing.next();
+    public ArrayList<Stroke> getStrokes() {
+        return strokes;
+    }
 
-                        g2d.setStroke(new BasicStroke(drawingPenSize));
-
-                        g2d.drawLine(-(int) temp1.getX() / 2, -(int) temp1.getY() / 2, -(int) first.getX() / 2, -(int) first.getY() / 2);
-                        //g2d.drawRect(-(int)temp1.getX()/2,-(int)temp1.getY()/2,1,1);
-
-                        first = temp1;
-                    }
-                    g2d.rotate(Math.toRadians(angle));
-                }
-            }
-
-            /*g2d.setColor(Color.GREEN);
-            g2d.fillRect(30,30,300,500);*/
-
-
-            // g.drawImage(drawing,0,0,null);
-
-
-            //System.out.println(DigitalDoilyWindow.angle + " " + DigitalDoilyWindow.numberOfSectors + " " +Math.sin(DigitalDoilyWindow.angle));
-    //}
-
+    public void setStrokes(ArrayList<Stroke> strokes) {
+        this.strokes = strokes;
     }
 
 }
