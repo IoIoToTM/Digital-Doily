@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
@@ -27,6 +28,7 @@ public class DigitalDoilyWindow extends JFrame {
         this.setSize(new Dimension(width, height));
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);
+        this.setResizable(false);
 
 
         //main panel we add to
@@ -39,7 +41,7 @@ public class DigitalDoilyWindow extends JFrame {
         DrawingArea drawingArea = new DrawingArea();
         //drawingArea.setBackground(Color.gray);
 
-        drawingArea.setPreferredSize(new Dimension(700, this.HEIGHT));
+        drawingArea.setPreferredSize(new Dimension(800, this.HEIGHT));
         drawingArea.setMinimumSize(new Dimension(700,this.HEIGHT));
         drawingArea.setMaximumSize(new Dimension(700,this.HEIGHT));
 
@@ -95,7 +97,9 @@ public class DigitalDoilyWindow extends JFrame {
 
         //panel for the options and gallery
         JPanel tools = new JPanel();
-        tools.setPreferredSize(new Dimension(301, this.HEIGHT));
+        tools.setPreferredSize(new Dimension(310, this.HEIGHT));
+        Border b =  BorderFactory.createLineBorder(Color.blue,1);
+        tools.setBorder(b);
 
         tools.setLayout(new GridLayout(2,1));
         tools.setBackground(Color.BLACK);

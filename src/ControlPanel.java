@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.text.TextAction;
@@ -153,6 +154,31 @@ public class ControlPanel extends JPanel {
         });
 
         add(saveDoily);
+
+        JButton removeFromGallery = new JButton("Please select what to remove");
+        gallery.setRemoveButton(removeFromGallery);
+        removeFromGallery.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(gallery.getSelected()==null)
+                {
+                    return;
+                }
+                else
+                {
+                    Border border1 = BorderFactory.createLineBorder(Color.black, 1);
+                    JButton temp = (JButton)e.getSource();
+                    temp.setText("Please select what to remove");
+
+                    JLabel test = gallery.getSelected();
+                    test.setBorder(border1);
+                    test.setIcon(null);
+                    gallery.setSelected(new JLabel());
+                    gallery.updateArray();
+            }}
+        });
+
+        add(removeFromGallery);
 
 
         /*this.addKeyListener(new KeyAdapter() {

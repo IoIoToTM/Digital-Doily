@@ -17,22 +17,21 @@ public class DrawingMouseListener implements MouseListener, MouseMotionListener{
     @Override
     public void mouseClicked(MouseEvent e) {
 
-        if (drawingArea.getNumberOfSectors() % 2 == 0) {
-            int tempX = (int) (e.getX() - drawingArea.getSize().getHeight() / 2);
-            int tempY = (int) (e.getY() - drawingArea.getSize().getHeight() / 2);
-            drawingArea.getPointList().addPoint(new Point(-tempX, -tempY));
-            //pointList.add();
-        } else {
-            int tempX = (int) (e.getX() - drawingArea.getSize().getHeight() / 2);
-            int tempY = (int) (e.getY() - drawingArea.getSize().getHeight() / 2);
-            drawingArea.getPointList().addPoint(new Point(tempX, tempY));
-        }
-        drawingArea.repaint();
+
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
-
+        if (drawingArea.getNumberOfSectors() % 2 == 0) {
+            int tempX = (int) (e.getX() - drawingArea.getSize().getWidth() / 2);
+            int tempY = (int) (e.getY() - drawingArea.getSize().getHeight()  / 2);
+            drawingArea.getPointList().addPoint(new Point(-tempX, -tempY));
+        } else {
+            int tempX = (int) (e.getX() - drawingArea.getSize().getWidth()/ 2);
+            int tempY = (int) (e.getY() - drawingArea.getSize().getHeight()  / 2);
+            drawingArea.getPointList().addPoint(new Point(tempX, tempY));
+        }
+        drawingArea.repaint();
     }
 
     @Override
