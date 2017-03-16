@@ -5,10 +5,15 @@ import javax.swing.*;
  */
 public class DigitalDolly {
 
+    DigitalDoilyWindow mainWindow;
     public DigitalDolly()
     {
-       DigitalDoilyWindow test =  new DigitalDoilyWindow(1024,600,"DigitalDoily");
+       mainWindow = new DigitalDoilyWindow(1024,600,"Digital Doily");
+    }
 
+    public void init()
+    {
+        mainWindow.init();
     }
 
     public static void main(String[] args) {
@@ -16,8 +21,8 @@ public class DigitalDolly {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                DigitalDolly test = new DigitalDolly();
-
+                DigitalDolly digitalDolly = new DigitalDolly();
+                digitalDolly.init();
             }
         });
 

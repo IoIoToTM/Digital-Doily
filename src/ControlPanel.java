@@ -23,9 +23,12 @@ public class ControlPanel extends JPanel {
     {
         super();
 
+        Border border = BorderFactory.createLineBorder(Color.black, 1);
+
+        this.setBorder(border);
         this.drawingArea = drawingArea;
         setLayout(new FlowLayout());
-        setBackground(Color.YELLOW);
+        //setBackground(Color.YELLOW);
         JButton chooseColor = new JButton("Choose Color");
 
         chooseColor.addActionListener(new ActionListener() {
@@ -173,7 +176,7 @@ public class ControlPanel extends JPanel {
                     JLabel test = gallery.getSelected();
                     test.setBorder(border1);
                     test.setIcon(null);
-                    gallery.setSelected(new JLabel());
+                    gallery.setSelected(null);
                     gallery.updateArray();
             }}
         });

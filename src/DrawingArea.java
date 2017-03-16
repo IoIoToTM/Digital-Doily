@@ -52,7 +52,7 @@ public class DrawingArea extends JPanel {
     }
 
     public BufferedImage copyDrawingArea(JPanel drawingArea) {
-        BufferedImage copy = new BufferedImage(drawingArea.getWidth(), drawingArea.getHeight(), BufferedImage.TYPE_INT_ARGB);
+        BufferedImage copy = new BufferedImage(drawingArea.getWidth(), drawingArea.getHeight(), BufferedImage.TYPE_3BYTE_BGR);
         drawingArea.paint(copy.getGraphics());
         return copy;
     }

@@ -73,9 +73,6 @@ public class Gallery extends JPanel {
                 selected = temp;
                 removeButton.setText("Remove Selected");
             }
-
-
-
         }
 
         @Override
@@ -93,22 +90,6 @@ public class Gallery extends JPanel {
 
         }
     }
-    public void paintComponent(Graphics g) {
-    super.paintComponent(g);
-
-       /*for(int i = 0; i < gallery.size();i++)
-       {
-           if(gallery.get(i).getIcon()==null)
-           {
-               System.out.println(i);
-               for(int j = i; j < gallery.size(); j++)
-               {
-                   gallery.add(i,gallery.get(i+1));
-               }
-           }
-       }*/
-
-    }
 
     public void updateArray()
     {
@@ -117,15 +98,15 @@ public class Gallery extends JPanel {
         int size = gallery.size();
         ArrayList<JLabel> temp;
 
-       /* gallery.get(0).setIcon(null);
-        gallery.get(1).setIcon(null);*/
-
-        for(int i = 0; i< size -1; i++)
+        for(int i = 0; i< size ; i++)
         {
             if(gallery.get(i).getIcon()==null)
             {
-                for(int j = i; j< size -2; j++)
-                gallery.get(j).setIcon(gallery.get(j+1).getIcon());
+                for(int j = i; j< size -1; j++)
+                {
+                    gallery.get(j).setIcon(gallery.get(j+1).getIcon());
+                }
+                gallery.get(size-1).setIcon(null);
             }
         }
 
@@ -217,12 +198,23 @@ public class Gallery extends JPanel {
         }}
     }
     public static BufferedImage resize(BufferedImage image, double width, double height) {
-        BufferedImage bi = new BufferedImage((int)width, (int)height, BufferedImage.TRANSLUCENT);
-        Graphics2D g2d = (Graphics2D) bi.createGraphics();
+       /* BufferedImage bi = new BufferedImage((int)width, (int)height, BufferedImage.TYPE_3BYTE_BGR);
+        Graphics2D g2d = bi.createGraphics();
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.addRenderingHints(new RenderingHints(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY));
-        g2d.drawImage(image, 0, 0,(int) width, (int)height, null);
+        g2d.drawImage(image, 0, 0,(int) width, (int)height, null);*/
+
+        Image tmp = image.getScaledInstance((int)width,(int) height,Image.SCALE_SMOOTH);
+
+        BufferedImage dimg = new BufferedImage((int)width, (int)height, BufferedImage.TYPE_INT_ARGB);
+
+        Graphics2D g2d = dimg.createGraphics();
+        g2d.drawImage(tmp, 0, 0, null);
         g2d.dispose();
-        return bi;
+
+        return dimg;
+        //return bi;
+
     }
 
     /*public void addImage(BufferedImage toGallery)
