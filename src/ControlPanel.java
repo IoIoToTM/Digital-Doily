@@ -23,10 +23,11 @@ public class ControlPanel extends JPanel {
     {
         super();
 
-        //black border for components
-        Border blackBorder = BorderFactory.createLineBorder(Color.black, 1);
+        //gray border for components
+        Border grayBorder = BorderFactory.createLineBorder(Color.darkGray, 1);
 
-        this.setBorder(blackBorder);
+        this.setBorder(grayBorder);
+        this.setBackground(Color.lightGray);
         this.drawingArea = drawingArea;
         setLayout(new FlowLayout());
 
@@ -40,7 +41,6 @@ public class ControlPanel extends JPanel {
                         "Choose Background Color",
                         window.getBackground());
                 if(newColor != null){
-                    System.out.println(newColor.getBlue());
                     drawingArea.setDrawingColor(newColor);
                     drawingArea.getPointList().setColor(newColor);
                 }
@@ -53,8 +53,7 @@ public class ControlPanel extends JPanel {
         clear.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                drawingArea.getStrokes().removeAll(drawingArea.getStrokes());
-                drawingArea.repaint();
+               drawingArea.clearDrawing();
             }
         });
 
@@ -65,18 +64,16 @@ public class ControlPanel extends JPanel {
         penSizeSpinner.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
-                JSpinner test = (JSpinner) e.getSource();
-                drawingArea.setDrawingPenSize( (int) test.getValue());
-                drawingArea.getPointList().setPenSize((int) test.getValue());
-                drawingArea.repaint();
+                JSpinner temp = (JSpinner) e.getSource();
 
+                drawingArea.setDrawingPenSize( (int) temp.getValue());
 
-                System.out.println(test.getValue().toString());
             }
         });
 
         JLabel penSizeText = new JLabel("Pen Size");
         JPanel penSizePanel = new JPanel(new GridLayout(2,1));
+        penSizePanel.setBackground(Color.lightGray);
         penSizePanel.add(penSizeText);
         penSizePanel.add(penSizeSpinner);
 
@@ -86,19 +83,14 @@ public class ControlPanel extends JPanel {
         sectorSpinner.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
-                JSpinner test = (JSpinner) e.getSource();
-                drawingArea.setNumberOfSectors((int) test.getValue());
-
-                drawingArea.setAngle( 360/(double)drawingArea.getNumberOfSectors());
-
-                drawingArea.repaint();
-
+                JSpinner sectorSpinner = (JSpinner) e.getSource();
+                drawingArea.setNumberOfSectors((int) sectorSpinner.getValue());
             }
         });
 
         JLabel numberOfSectorsText = new JLabel("Sectors");
         JPanel sectorPanel = new JPanel(new GridLayout(2,1));
-
+        sectorPanel.setBackground(Color.lightGray);
         sectorPanel.add(numberOfSectorsText);
         sectorPanel.add(sectorSpinner);
 
@@ -108,12 +100,12 @@ public class ControlPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 drawingArea.setShowSectorLines(!drawingArea.isShowSectorLines());
-                JButton temp = (JButton)e.getSource();
+                JButton sectorToggle = (JButton)e.getSource();
                 if(drawingArea.isShowSectorLines())
                 {
-                    temp.setText("Turn Sector Lines off");
+                    sectorToggle.setText("Turn Sector Lines off");
                 }
-                else temp.setText("Turn Sector Lines on");
+                else sectorToggle.setText("Turn Sector Lines on");
                 drawingArea.repaint();
             }
         });
@@ -125,12 +117,12 @@ public class ControlPanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 drawingArea.setReflected(!drawingArea.isReflected());
 
-                JButton temp = (JButton)e.getSource();
+                JButton reflectionToggle = (JButton)e.getSource();
                 if(drawingArea.isReflected())
                 {
-                    temp.setText("Turn Reflection off");
+                    reflectionToggle.setText("Turn Reflection off");
                 }
-                else temp.setText("Turn Reflection on");
+                else reflectionToggle.setText("Turn Reflection on");
 
                 drawingArea.getPointList().setReflected(drawingArea.isReflected());
                 drawingArea.repaint();
@@ -143,9 +135,7 @@ public class ControlPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                if(!drawingArea.getStrokes().isEmpty())
-                drawingArea.getStrokes().remove(drawingArea.getStrokes().size()-1);
-                drawingArea.repaint();
+                drawingArea.undoLastAction();
             }
         });
 
@@ -173,13 +163,13 @@ public class ControlPanel extends JPanel {
                 }
                 else
                 {
-                    Border border1 = BorderFactory.createLineBorder(Color.black, 1);
-                    JButton temp = (JButton)e.getSource();
-                    temp.setText("Please select what to remove");
+                    Border grayBorder = BorderFactory.createLineBorder(Color.darkGray, 1);
+                    JButton removeButton = (JButton)e.getSource();
+                    removeButton.setText("Please select what to remove");
 
-                    JLabel test = gallery.getSelected();
-                    test.setBorder(border1);
-                    test.setIcon(null);
+                    JLabel selected = gallery.getSelected();
+                    selected.setBorder(grayBorder);
+                    selected.setIcon(null);
                     gallery.setSelected(null);
                     gallery.updateArray();
             }}

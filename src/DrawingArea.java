@@ -89,6 +89,21 @@ public class DrawingArea extends JPanel {
         return copy;
     }
 
+    //clearing the drawing
+    public void clearDrawing()
+    {
+        strokes.removeAll(strokes);
+        repaint();
+    }
+
+    //undo last action
+    public void undoLastAction()
+    {
+        if(!strokes.isEmpty()){
+            strokes.remove(strokes.size()-1);
+            repaint();
+        }
+    }
 
     //getters and setters for most of the variables
     public int getDrawingPenSize() {
@@ -96,7 +111,10 @@ public class DrawingArea extends JPanel {
     }
 
     public void setDrawingPenSize(int drawingPenSize) {
+
+        pointList.setPenSize(drawingPenSize);
         this.drawingPenSize = drawingPenSize;
+        repaint();
     }
     public Color getDrawingColor() {
         return drawingColor;
@@ -111,7 +129,11 @@ public class DrawingArea extends JPanel {
     }
 
     public void setNumberOfSectors(int numberOfSectors) {
+
+        setAngle( 360/(double)getNumberOfSectors());
         this.numberOfSectors = numberOfSectors;
+        repaint();
+
     }
 
     public double getAngle() {

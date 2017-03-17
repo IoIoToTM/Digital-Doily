@@ -19,70 +19,39 @@ public class Gallery extends JPanel {
 
     private JButton removeButton;
 
-    //inner class for the custom mouse listener
-    class MouseGallery implements MouseListener
+    public Gallery()
     {
-       // private ArrayList<JLabel> gallery;
+        super();
 
-        public MouseGallery(ArrayList<JLabel> gallery)
+        selected = null;
+        removeButton = null;
+
+        gallery = new ArrayList<JLabel>();
+
+        //set the gallery to grid layout 12*1 so it shows 12 elements in a column
+        setLayout(new GridLayout(12, 1));
+
+        //add 12 empty JLabels to the gallery
+        for(int i =1 ; i<=12;i++)
         {
-            //this.gallery = gallery;
-        }
-        @Override
-        public void mouseClicked(MouseEvent e) {
-        }
 
-        @Override
-        public void mousePressed(MouseEvent e) {
-            
-            //go through the whole array of gallery images (JLabels) and set their borders to black
+            Border grayBorder = BorderFactory.createLineBorder(Color.darkGray, 1);
 
-            Border blackBorder = BorderFactory.createLineBorder(Color.black, 1);
-            for(JLabel i: gallery)
-            {
-                i.setBorder(blackBorder);
-            }
-            
-            //get the selected label
-            JLabel clickedJLabel = (JLabel) e.getSource();
-
-            //if it's an empty one (no image) then just return
-            if(clickedJLabel.getIcon()==null)
-            {
-                return;
-            }
-
-            //if the selected is the same as the clicked, then unselect it
-            if(selected==clickedJLabel)
-            {
-                clickedJLabel.setBorder(blackBorder);
-                selected = null;
-                removeButton.setText("Please select what to remove");
-            }
-            else {
-                //else make it's border red and set the selected JLabel to the clicked one
-                Border selectedBorder = BorderFactory.createLineBorder(Color.red, 2);
-                clickedJLabel.setBorder(selectedBorder);
-                selected = clickedJLabel;
-                removeButton.setText("Remove Selected");
-            }
+            //create a temporary JLabel, set a few parameters and add it to the gallery
+            JLabel temp = new JLabel();
+            temp.setBorder(grayBorder);
+            temp.addMouseListener(new MouseGallery());
+            gallery.add(temp);
         }
 
-        @Override
-        public void mouseReleased(MouseEvent e) {
-
-        }
-
-        @Override
-        public void mouseEntered(MouseEvent e) {
-
-        }
-
-        @Override
-        public void mouseExited(MouseEvent e) {
-
+        //go through the gallery arraylist and add each JLabel to the JPanel
+        for(JLabel i : gallery)
+        {
+            add(i);
         }
     }
+
+
 
     //function for updating the array of JLabels used to store them
     public void updateArray()
@@ -106,36 +75,7 @@ public class Gallery extends JPanel {
         }
     }
 
-    public Gallery()
-    {
-        super();
 
-        selected = null;
-        removeButton = null;
-
-        gallery = new ArrayList<JLabel>();
-        //set the gallery to grid layout 4*3 so it shows 12 elements
-        setLayout(new GridLayout(4, 3));
-
-        //add 12 empty JLabels to the gallery
-        for(int i =1 ; i<=12;i++)
-        {
-
-            Border blackBorder = BorderFactory.createLineBorder(Color.black, 1);
-
-            //create a temporary JLabel, set a few parameters and add it to the gallery
-            JLabel temp = new JLabel();
-            temp.setBorder(blackBorder);
-            temp.addMouseListener(new MouseGallery(gallery));
-            gallery.add(temp);
-        }
-
-        //go through the gallery arraylist and add each JLabel to the JPanel
-        for(JLabel i : gallery)
-        {
-            add(i);
-        }
-    }
 
     //add an image to the array
     public void addImage(BufferedImage toGallery)
@@ -167,6 +107,65 @@ public class Gallery extends JPanel {
         g2d.dispose();
 
         return resizedBI;
+    }
+
+    //inner class for the custom mouse listener
+    class MouseGallery implements MouseListener
+    {
+
+        @Override
+        public void mouseClicked(MouseEvent e) {
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+
+            //go through the whole array of gallery images (JLabels) and set their borders to lightgray
+            Border grayBorder = BorderFactory.createLineBorder(Color.darkGray, 1);
+            for(JLabel i: gallery)
+            {
+                i.setBorder(grayBorder);
+            }
+
+            //get the selected label
+            JLabel clickedJLabel = (JLabel) e.getSource();
+
+            //if it's an empty one (no image) then just return
+            if(clickedJLabel.getIcon()==null)
+            {
+                return;
+            }
+
+            //if the selected is the same as the clicked, then unselect it
+            if(selected==clickedJLabel)
+            {
+                clickedJLabel.setBorder(grayBorder);
+                selected = null;
+                removeButton.setText("Please select what to remove");
+            }
+            else {
+                //else make it's border red and set the selected JLabel to the clicked one
+                Border selectedBorder = BorderFactory.createLineBorder(Color.red, 2);
+                clickedJLabel.setBorder(selectedBorder);
+                selected = clickedJLabel;
+                removeButton.setText("Remove Selected");
+            }
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+
+        }
     }
 
 

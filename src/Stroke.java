@@ -13,15 +13,9 @@ public class Stroke {
     private Color color;
     private boolean reflected;
     private DrawingArea drawingArea;
-
-    public void setPenSize(int penSize) {
-        this.penSize = penSize;
-    }
-
     private int penSize;
 
     //few different constructors
-
     public Stroke(DrawingArea drawingArea,ArrayList<Point> arr, Color color, boolean reflected, int penSize)
     {
         this.drawingArea = drawingArea;
@@ -116,14 +110,15 @@ public class Stroke {
     public ArrayList<Point> getPointList() {
         return pointList;
     }
-
     public Color getColor() {
         return color;
     }
     public void addPoint(Point point) {
         this.pointList.add(point);
     }
-
+    public void setPenSize(int penSize) {
+        this.penSize = penSize;
+    }
     public void setColor(Color color) {
         this.color = color;
     }

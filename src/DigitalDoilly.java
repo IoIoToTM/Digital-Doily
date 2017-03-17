@@ -3,12 +3,12 @@ import javax.swing.*;
 /**
  * Created by IoIoTo on 7.3.2017 г..
  */
-public class DigitalDolly {
+public class DigitalDoilly {
 
     DigitalDoilyWindow mainWindow;
-    public DigitalDolly()
+    public DigitalDoilly()
     {
-       mainWindow = new DigitalDoilyWindow(1024,600,"Digital Doily");
+       mainWindow = new DigitalDoilyWindow(1024,800,"Digital Doily");
     }
 
     public void init()
@@ -21,7 +21,7 @@ public class DigitalDolly {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new DigitalDolly().init();
+                new DigitalDoilly().init();
             }
         });
 

@@ -11,19 +11,10 @@ import java.util.ArrayList;
  */
 public class DigitalDoilyWindow extends JFrame {
 
-    private static int WIDTH;
-    private static int HEIGHT;
-    private static String NAME;
-
-    public static final Font MAIN_FONT = new Font("Arial", Font.PLAIN, 15);
-    public static final Dimension DEFAULT_SIZE = new Dimension(1024, 600);
 
     public DigitalDoilyWindow(int width, int height, String name) {
 
         super(name);
-
-        this.WIDTH = width;
-        this.HEIGHT = height;
 
         this.setSize(new Dimension(width, height));
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -45,33 +36,22 @@ public class DigitalDoilyWindow extends JFrame {
         drawingArea.setMinimumSize(new Dimension(700,this.HEIGHT));
         drawingArea.setMaximumSize(new Dimension(700,this.HEIGHT));
 
-        //panel for the options and gallery
-        JPanel tools = new JPanel();
-        tools.setPreferredSize(new Dimension(310, this.HEIGHT));
-        Border b =  BorderFactory.createLineBorder(Color.blue,1);
-        tools.setBorder(b);
-        tools.setLayout(new GridLayout(2,1));
-        tools.setBackground(Color.BLACK);
-
         //panel for the gallery
         Gallery gallery = new Gallery();
-        gallery.setPreferredSize(new Dimension(600,this.HEIGHT/2));
+        gallery.setPreferredSize(new Dimension(100,this.HEIGHT/2));
 
         //control panel
         ControlPanel controls = new ControlPanel(drawingArea,this,gallery);
-        controls.setPreferredSize(new Dimension(200,this.HEIGHT/2));
+        controls.setPreferredSize(new Dimension(200,50));
 
-        //add to the tool panel
-        tools.add(controls);
-        tools.add(gallery);
-
-        //add the drawing area and the tools to the window
+        //add the drawing area, control panel and gallery to the window
         window.add(drawingArea, BorderLayout.CENTER);
-        window.add(tools, BorderLayout.EAST);
+        window.add(gallery,BorderLayout.EAST);
+        window.add(controls,BorderLayout.NORTH);
 
         //add the main window JPanel to the JFrame
         this.add(window);
 
-        //this.pack();
+
     }
 }
