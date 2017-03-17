@@ -41,7 +41,6 @@ public class DigitalDoilyWindow extends JFrame {
 
         //panel for the drawing area
         DrawingArea drawingArea = new DrawingArea();
-
         drawingArea.setPreferredSize(new Dimension(800, this.HEIGHT));
         drawingArea.setMinimumSize(new Dimension(700,this.HEIGHT));
         drawingArea.setMaximumSize(new Dimension(700,this.HEIGHT));
@@ -54,31 +53,25 @@ public class DigitalDoilyWindow extends JFrame {
         tools.setLayout(new GridLayout(2,1));
         tools.setBackground(Color.BLACK);
 
-
-
-
-
-
         //panel for the gallery
         Gallery gallery = new Gallery();
         gallery.setPreferredSize(new Dimension(600,this.HEIGHT/2));
 
-
+        //control panel
         ControlPanel controls = new ControlPanel(drawingArea,this,gallery);
         controls.setPreferredSize(new Dimension(200,this.HEIGHT/2));
 
-        //tool panel
+        //add to the tool panel
         tools.add(controls);
         tools.add(gallery);
 
+        //add the drawing area and the tools to the window
         window.add(drawingArea, BorderLayout.CENTER);
         window.add(tools, BorderLayout.EAST);
 
-
+        //add the main window JPanel to the JFrame
         this.add(window);
 
-        this.pack();
-
-        //drawingArea.repaint();
+        //this.pack();
     }
 }

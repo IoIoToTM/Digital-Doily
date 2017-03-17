@@ -19,24 +19,27 @@ public class ControlPanel extends JPanel {
 
     private DrawingArea drawingArea;
 
-    public ControlPanel(DrawingArea drawingArea,JFrame test,Gallery gallery)
+    public ControlPanel(DrawingArea drawingArea,JFrame window,Gallery gallery)
     {
         super();
 
-        Border border = BorderFactory.createLineBorder(Color.black, 1);
+        //black border for components
+        Border blackBorder = BorderFactory.createLineBorder(Color.black, 1);
 
-        this.setBorder(border);
+        this.setBorder(blackBorder);
         this.drawingArea = drawingArea;
         setLayout(new FlowLayout());
         //setBackground(Color.YELLOW);
+
+        //making a color chooser with the built in JColorChooser
         JButton chooseColor = new JButton("Choose Color");
 
         chooseColor.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 Color newColor = JColorChooser.showDialog(
-                        test,
+                        window,
                         "Choose Background Color",
-                        test.getBackground());
+                        window.getBackground());
                 if(newColor != null){
                     System.out.println(newColor.getBlue());
                     drawingArea.setDrawingColor(newColor);
@@ -46,25 +49,25 @@ public class ControlPanel extends JPanel {
             }
         });
 
-        add(chooseColor);
+        //add(chooseColor);
 
 
+        //clear button that removes all strokes from the arraylist
         JButton clear = new JButton("Clear");
         clear.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-               // DigitalDoilyWindow.pointList.removeAll(DigitalDoilyWindow.pointList);
                 drawingArea.getStrokes().removeAll(drawingArea.getStrokes());
-                System.out.println("dddddd");
                 drawingArea.repaint();
             }
         });
 
 
-        add(clear);
+        //add(clear);
+
+        //spinner for the pen size
 
         SpinnerModel penSize = new SpinnerNumberModel(drawingArea.getDrawingPenSize(),1,20,1);
-
         JSpinner penSizeSpinner = new JSpinner(penSize);
         penSizeSpinner.addChangeListener(new ChangeListener() {
             @Override
@@ -79,9 +82,14 @@ public class ControlPanel extends JPanel {
             }
         });
 
-        add(penSizeSpinner);
+        JLabel penSizeText = new JLabel("Pen Size");
+        JPanel penSizePanel = new JPanel(new GridLayout(2,1));
+        penSizePanel.add(penSizeText);
+        penSizePanel.add(penSizeSpinner);
+        //add(penSizePanel);
 
-        SpinnerModel numOfSectors= new SpinnerNumberModel(drawingArea.getNumberOfSectors(),1,100,1);
+        //spinner for the number of sectors
+        SpinnerModel numOfSectors = new SpinnerNumberModel(drawingArea.getNumberOfSectors(),1,100,1);
         JSpinner sectorSpinner = new JSpinner(numOfSectors);
         sectorSpinner.addChangeListener(new ChangeListener() {
             @Override
@@ -95,7 +103,16 @@ public class ControlPanel extends JPanel {
 
             }
         });
-        add(sectorSpinner);
+
+        JLabel numberOfSectorsText = new JLabel("Sectors");
+        JPanel sectorPanel = new JPanel(new GridLayout(2,1));
+
+        sectorPanel.add(numberOfSectorsText);
+        sectorPanel.add(sectorSpinner);
+
+        //add(sectorPanel);
+
+        //toggle button for showing the sector lines
         JButton toggleSectors = new JButton("Turn Sector Lines off");
         toggleSectors.addActionListener(new ActionListener() {
             @Override
@@ -110,8 +127,10 @@ public class ControlPanel extends JPanel {
                 drawingArea.repaint();
             }
         });
-        add(toggleSectors);
+       // add(toggleSectors);
 
+
+        //toggle button for reflecting
         JButton toggleReflection = new JButton("Turn Refection on");
         toggleReflection.addActionListener(new ActionListener() {
             @Override
@@ -129,11 +148,11 @@ public class ControlPanel extends JPanel {
                 drawingArea.repaint();
             }
         });
-        add(toggleReflection);
+        //add(toggleReflection);
 
 
+        //undo button that removes the last element from the arraylist of strokes
         JButton undo = new JButton("Undo");
-
         undo.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -144,20 +163,23 @@ public class ControlPanel extends JPanel {
             }
         });
 
-        add(undo);
+        //add(undo);
+
+        //button for saving the current doily on to the gallery
         JButton saveDoily = new JButton("Save to gallery");
         saveDoily.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                BufferedImage temp = drawingArea.copyDrawingArea(drawingArea);
+                BufferedImage temp = drawingArea.copyDrawingArea();
                 gallery.addImage(temp);
                 gallery.repaint();
 
             }
         });
 
-        add(saveDoily);
+        //add(saveDoily);
 
+        //button for removing selected drawing from the gallery
         JButton removeFromGallery = new JButton("Please select what to remove");
         gallery.setRemoveButton(removeFromGallery);
         removeFromGallery.addActionListener(new ActionListener() {
@@ -181,26 +203,17 @@ public class ControlPanel extends JPanel {
             }}
         });
 
+        //add(removeFromGallery);
+
+        add(chooseColor);
+        add(penSizePanel);
+        add(sectorPanel);
+        add(undo);
+        add(clear);
+        add(toggleReflection);
+        add(toggleSectors);
+        add(saveDoily);
         add(removeFromGallery);
-
-
-        /*this.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyTyped(KeyEvent e) {
-                super.keyTyped(e);
-                System.out.println("TYOE");
-
-                if(e.getKeyCode()==KeyEvent.VK_Z && e.isControlDown())
-                {
-
-                    System.out.println("CONTROL");
-                    if(!DrawingArea.strokes.isEmpty())
-                        DrawingArea.strokes.remove(DrawingArea.strokes.size()-1);
-                    drawingArea.repaint();
-                }
-            }
-        });*/
-
     }
 
 }

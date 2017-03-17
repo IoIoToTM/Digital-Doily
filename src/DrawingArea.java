@@ -15,7 +15,6 @@ import java.util.Iterator;
 public class DrawingArea extends JPanel {
 
 
-
     private int drawingPenSize;
     private Color drawingColor;
     private int numberOfSectors;
@@ -23,8 +22,8 @@ public class DrawingArea extends JPanel {
     private boolean showSectorLines = true;
     private boolean reflected = false;
 
-    private Stroke pointList;
-    private ArrayList<Stroke> strokes;
+    private Stroke pointList; //storing the current line you're drawing
+    private ArrayList<Stroke> strokes; //arraylist of all the previously drawn lines
 
     public DrawingArea() {
 
@@ -47,28 +46,21 @@ public class DrawingArea extends JPanel {
 
     }
 
-    public void paint(Graphics g) {
-        super.paint(g);
-    }
-
-    public BufferedImage copyDrawingArea(JPanel drawingArea) {
-        BufferedImage copy = new BufferedImage(drawingArea.getWidth(), drawingArea.getHeight(), BufferedImage.TYPE_3BYTE_BGR);
-        drawingArea.paint(copy.getGraphics());
-        return copy;
-    }
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
         Graphics2D g2d = (Graphics2D) g;
 
+
+        //turning antialiasing on
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
 
-        //g2d.setColor(Color.black);
+        //translating to the center so drawing is easier
         g2d.translate(this.getWidth() / 2, this.getHeight() / 2);
 
-
+        //if the sector lines are shown draw them
         if (showSectorLines)
             for (int i = 0; i < numberOfSectors; i++) {
                 g2d.setStroke(new BasicStroke(1));
@@ -77,19 +69,28 @@ public class DrawingArea extends JPanel {
                 g2d.rotate(Math.toRadians(angle));
             }
 
-
+        //setting the pen size to the current size
         g2d.setStroke(new BasicStroke(drawingPenSize));
-        g2d.setColor(Color.white);
 
-
-        //going through backwards through the stroke arraylist
+        //going through the stroke arraylist and drawing each past one
         for (int i = 0; i < strokes.size(); i++) {
             strokes.get(i).drawStroke(g2d);
         }
+
+        //draw current stroke
         pointList.drawStroke(g2d);
 
     }
 
+    //function for copying the image on the drawing area and returning a buffered image of it
+    public BufferedImage copyDrawingArea() {
+        BufferedImage copy = new BufferedImage((int)getSize().getWidth(), (int)getSize().getHeight(), BufferedImage.TYPE_3BYTE_BGR);
+        paint(copy.getGraphics());
+        return copy;
+    }
+
+
+    //getters and setters for most of the variables
     public int getDrawingPenSize() {
         return drawingPenSize;
     }
@@ -152,5 +153,8 @@ public class DrawingArea extends JPanel {
     public void setStrokes(ArrayList<Stroke> strokes) {
         this.strokes = strokes;
     }
+
+
+
 
 }

@@ -21,8 +21,7 @@ public class DigitalDolly {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                DigitalDolly digitalDolly = new DigitalDolly();
-                digitalDolly.init();
+                new DigitalDolly().init();
             }
         });
 
