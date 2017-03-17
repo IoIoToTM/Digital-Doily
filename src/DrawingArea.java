@@ -14,7 +14,6 @@ import java.util.Iterator;
 
 public class DrawingArea extends JPanel {
 
-
     private int drawingPenSize;
     private Color drawingColor;
     private int numberOfSectors;
@@ -52,7 +51,6 @@ public class DrawingArea extends JPanel {
 
         Graphics2D g2d = (Graphics2D) g;
 
-
         //turning antialiasing on
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
@@ -60,14 +58,9 @@ public class DrawingArea extends JPanel {
         //translating to the center so drawing is easier
         g2d.translate(this.getWidth() / 2, this.getHeight() / 2);
 
-        //if the sector lines are shown draw them
+        //draw sector lines if toggled on
         if (showSectorLines)
-            for (int i = 0; i < numberOfSectors; i++) {
-                g2d.setStroke(new BasicStroke(1));
-                g2d.setColor(Color.WHITE);
-                g2d.drawLine(0, 0, 0, -300);
-                g2d.rotate(Math.toRadians(angle));
-            }
+        drawSectorLines(g2d);
 
         //setting the pen size to the current size
         g2d.setStroke(new BasicStroke(drawingPenSize));
@@ -79,6 +72,18 @@ public class DrawingArea extends JPanel {
 
         //draw current stroke
         pointList.drawStroke(g2d);
+
+    }
+
+    private void drawSectorLines(Graphics2D g2d)
+    {
+
+            for (int i = 0; i < numberOfSectors; i++) {
+                g2d.setStroke(new BasicStroke(1));
+                g2d.setColor(Color.WHITE);
+                g2d.drawLine(0, 0, 0, -500);
+                g2d.rotate(Math.toRadians(angle));
+            }
 
     }
 

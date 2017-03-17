@@ -17,9 +17,14 @@ public class DigitalDoilyWindow extends JFrame {
         super(name);
 
         this.setSize(new Dimension(width, height));
+        this.setPreferredSize(new Dimension(width,height));
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);
-        this.setResizable(false);
+
+        //set resizable to true but then when an image is saved to the gallery the aspect ration
+        //(4:3 in this case for each gallery item) sometimes isn't exact and the image becomes skewed
+        this.setResizable(true);
+
     }
 
     public void init()

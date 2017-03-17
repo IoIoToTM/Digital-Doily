@@ -8,7 +8,7 @@ public class DigitalDoilly {
     DigitalDoilyWindow mainWindow;
     public DigitalDoilly()
     {
-       mainWindow = new DigitalDoilyWindow(1024,800,"Digital Doily");
+       mainWindow = new DigitalDoilyWindow(1067,800,"Digital Doily");
     }
 
     public void init()
