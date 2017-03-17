@@ -29,7 +29,6 @@ public class ControlPanel extends JPanel {
         this.setBorder(blackBorder);
         this.drawingArea = drawingArea;
         setLayout(new FlowLayout());
-        //setBackground(Color.YELLOW);
 
         //making a color chooser with the built in JColorChooser
         JButton chooseColor = new JButton("Choose Color");
@@ -49,9 +48,6 @@ public class ControlPanel extends JPanel {
             }
         });
 
-        //add(chooseColor);
-
-
         //clear button that removes all strokes from the arraylist
         JButton clear = new JButton("Clear");
         clear.addActionListener(new ActionListener() {
@@ -63,10 +59,7 @@ public class ControlPanel extends JPanel {
         });
 
 
-        //add(clear);
-
         //spinner for the pen size
-
         SpinnerModel penSize = new SpinnerNumberModel(drawingArea.getDrawingPenSize(),1,20,1);
         JSpinner penSizeSpinner = new JSpinner(penSize);
         penSizeSpinner.addChangeListener(new ChangeListener() {
@@ -86,7 +79,6 @@ public class ControlPanel extends JPanel {
         JPanel penSizePanel = new JPanel(new GridLayout(2,1));
         penSizePanel.add(penSizeText);
         penSizePanel.add(penSizeSpinner);
-        //add(penSizePanel);
 
         //spinner for the number of sectors
         SpinnerModel numOfSectors = new SpinnerNumberModel(drawingArea.getNumberOfSectors(),1,100,1);
@@ -110,8 +102,6 @@ public class ControlPanel extends JPanel {
         sectorPanel.add(numberOfSectorsText);
         sectorPanel.add(sectorSpinner);
 
-        //add(sectorPanel);
-
         //toggle button for showing the sector lines
         JButton toggleSectors = new JButton("Turn Sector Lines off");
         toggleSectors.addActionListener(new ActionListener() {
@@ -127,8 +117,6 @@ public class ControlPanel extends JPanel {
                 drawingArea.repaint();
             }
         });
-       // add(toggleSectors);
-
 
         //toggle button for reflecting
         JButton toggleReflection = new JButton("Turn Refection on");
@@ -148,8 +136,6 @@ public class ControlPanel extends JPanel {
                 drawingArea.repaint();
             }
         });
-        //add(toggleReflection);
-
 
         //undo button that removes the last element from the arraylist of strokes
         JButton undo = new JButton("Undo");
@@ -163,8 +149,6 @@ public class ControlPanel extends JPanel {
             }
         });
 
-        //add(undo);
-
         //button for saving the current doily on to the gallery
         JButton saveDoily = new JButton("Save to gallery");
         saveDoily.addActionListener(new ActionListener() {
@@ -176,8 +160,6 @@ public class ControlPanel extends JPanel {
 
             }
         });
-
-        //add(saveDoily);
 
         //button for removing selected drawing from the gallery
         JButton removeFromGallery = new JButton("Please select what to remove");
@@ -202,8 +184,6 @@ public class ControlPanel extends JPanel {
                     gallery.updateArray();
             }}
         });
-
-        //add(removeFromGallery);
 
         add(chooseColor);
         add(penSizePanel);
