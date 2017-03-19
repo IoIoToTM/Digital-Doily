@@ -85,6 +85,7 @@ public class ControlPanel extends JPanel {
             public void stateChanged(ChangeEvent e) {
                 JSpinner sectorSpinner = (JSpinner) e.getSource();
                 drawingArea.setNumberOfSectors((int) sectorSpinner.getValue());
+                drawingArea.repaint();
             }
         });
 

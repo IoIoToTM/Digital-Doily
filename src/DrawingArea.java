@@ -78,7 +78,7 @@ public class DrawingArea extends JPanel {
     private void drawSectorLines(Graphics2D g2d)
     {
 
-            for (int i = 0; i < numberOfSectors; i++) {
+            for (int i = 0; i <=numberOfSectors; i++) {
                 g2d.setStroke(new BasicStroke(1));
                 g2d.setColor(Color.WHITE);
                 g2d.drawLine(0, 0, 0, -500);
@@ -135,8 +135,8 @@ public class DrawingArea extends JPanel {
 
     public void setNumberOfSectors(int numberOfSectors) {
 
-        setAngle( 360/(double)getNumberOfSectors());
         this.numberOfSectors = numberOfSectors;
+        setAngle( 360/(double)getNumberOfSectors());
         repaint();
 
     }
